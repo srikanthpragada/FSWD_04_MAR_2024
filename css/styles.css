@@ -1,0 +1,25 @@
+body  {
+    font-family: calibri;
+}
+
+h1 {
+    color :red;
+}
+
+p {
+    font-size:14pt;
+}
+
+
+/* css class */
+
+.redwhite {
+    color :white;
+    background-color: red;
+}
+
+.bigred {
+    color: red;
+    font-size: 30pt;
+    letter-spacing: 5pt;
+}
