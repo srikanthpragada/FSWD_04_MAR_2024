@@ -1,0 +1,37 @@
+<html>
+
+<head>
+   <title>Combinator Selectors</title>
+    <style>
+        /* First span after div - adjacent sibling selector */
+        div + span {
+            color: green;
+        }
+        /* All a immediate children of div  - Child selector */
+        div > a {
+            color: red;
+        }
+        /* Nested - All PRE elements inside DIV  - Descendant selector */
+        div pre  {
+            font-size:1.5em;
+        }
+    </style>
+</head>
+<body>
+    <div title="First">
+        First DIV
+        <p></p>
+        <a href="">Anchor Inside DIV</a>
+        <p>
+            Paragraph One 
+            <pre>DIV -> P -> PRE </pre>
+        </p>
+    </div>
+  
+    
+    <div class="banner">Banner</div>
+    <span>Span Banner</span>
+    
+</body>
+
+</html>

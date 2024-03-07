@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>Pseudo Element</title>
+    <style>
+      
+        li::marker {
+            color: red;
+        }
+
+        div::first-line {
+            font-size:16pt;
+        }
+
+        li::after {
+            content: " Fruit"
+        }
+
+        ::selection {
+            color:white;
+            background-color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        First line
+        <br/>
+        Second line
+    </div>
+     
+    <ul>
+        <li>Apple</li>
+        <li>Orange</li>
+    </ul>
+</body>
+
+</html>

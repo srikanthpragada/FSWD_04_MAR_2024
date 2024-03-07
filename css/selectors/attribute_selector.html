@@ -1,0 +1,36 @@
+<html>
+
+<head>
+    <title>Attribute Selector</title>
+    <style>
+        /* Element DIV with attribute title */
+        div[title] {
+            color: red;
+        }
+
+        /* Element A with target attribute set to _blank */
+        a[target='_blank'] {
+            font-size: 1.5em;
+        }
+
+        /* Element A with title attribute containing Show */
+        a[title *= 'Schedule'] {
+            color:green;
+        }
+    </style>
+</head>
+
+<body>
+    <div title="First">
+        This is a DIV
+    </div>
+    <p></p>
+    <a href="http://www.srikanthtechnologies.com" 
+         title="Batch Schedule">Srikanth Technologies</a>
+    <p></p>
+    <a href="https://www.google.com" target="_blank">Google</a>
+
+  
+</body>
+
+</html>
