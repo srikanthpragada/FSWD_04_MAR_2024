@@ -6,11 +6,14 @@
     <title>Show DateTime</title>
     <script>
         function showDateTime() {
-            alert(new Date())
+            var dt = new Date()
+            var now = document.getElementById("now")
+            now.innerHTML = dt 
         }
     </script>
 </head>
 <body>
+    <h1 style="color:red" id="now"></h1>
     <button onClick="showDateTime()">Show DateTime</button>
 </body>
 </html>

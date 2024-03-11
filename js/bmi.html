@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI</title>
+    <script>
+        function calculate() {
+            var height = document.getElementById("height").value
+            if (height == "") {
+                alert("Sorry! Please provide height!");
+                return; // stop function 
+            }
+
+            var weight = document.getElementById("weight").value
+
+            if (weight == "") {
+                alert("Sorry! Please provide weight!");
+                return; // stop function 
+            }
+
+            var bmi = weight / (height * height)
+            alert(bmi)
+        }
+    </script>
+</head>
+
+<body>
+    <h1>BMI</h1>
+    Height <br />
+    <input type="number" id="height" step="0.01" /> (Meters)
+    <p></p>
+    Weight <br />
+    <input type="number" id="weight" /> (Killos)
+    <p></p>
+    <button onClick="calculate()">Calculate BMI</button>
+</body>
+
+</html>
