@@ -21,7 +21,18 @@
             }
 
             var bmi = weight / (height * height)
-            alert(bmi)
+            msg  ="Obesity"
+
+            if (bmi < 18.5)
+               msg = "Underweight"
+            else 
+              if(bmi < 25)
+                 msg = "Normal"
+              else
+                if(bmi < 30)
+                   msg = "Overweight"
+
+            alert(msg)
         }
     </script>
 </head>
