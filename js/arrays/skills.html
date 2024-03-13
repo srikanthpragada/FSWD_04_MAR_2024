@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,26 +10,39 @@
 
         function addSkill() {
             var skill = document.getElementById("skill").value
-            skills.push(skill) 
-            showSkills();
+            if (skills.includes(skill)) {
+                alert("Duplicate Skill!");
+            }
+            else {
+                skills.push(skill)
+                showSkills();
+            }
         }
 
         function showSkills() {
             let output = ""
             for (let s of skills) {
-                 output += `<li>${s}</li>`
+                output += `<li>${s}</li>`
             }
             document.getElementById("skills").innerHTML = output
         }
+
+        function clearSkills() {
+            skills = []
+            showSkills()
+        }
     </script>
 </head>
+
 <body>
     <h1>Skills</h1>
     Skill <input type="text" id="skill" />
     <button onClick="addSkill()">Add</button>
+    <button onClick="clearSkills()">Clear</button>
     <p></p>
     <ul id="skills">
 
     </ul>
 </body>
+
 </html>
