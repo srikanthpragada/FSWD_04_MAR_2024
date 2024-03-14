@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Marks</title>
+    <script>
+        function getTotal() {
+            var data = document.getElementById("txtMarks").value 
+            var marks = data.split(",")
+            var total = 0
+
+            for (let m of marks) {
+                if(! isNaN(m))
+                    total += parseInt(m)
+            }
+
+            alert(total)
+        }
+    </script>
+</head>
+<body>
+    Marks : <input type="text" id="txtMarks" />
+    <button onClick="getTotal()">Total</button>
+</body>
+</html>
