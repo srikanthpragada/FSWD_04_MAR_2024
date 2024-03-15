@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Days Count</title>
+    <script>
+        function getDays() {
+            fdate = document.getElementById("fd").value
+            sdate = document.getElementById("sd").value
+            //console.log(fdate, sdate)
+            fd = new Date(fdate)
+            sd = new Date(sdate)
+
+            ms = sd.getTime() - fd.getTime()
+            days = ms / (1000 * 60 * 60 * 24)
+            alert(days)
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Days Count</h1>
+    First Date <br /> <input type="date" id="fd" />
+    <p></p>
+    Second Date <br /> <input type="date" id="sd" />
+    <p></p>
+    <button onClick="getDays()">Get Days</button>
+
+</body>
+
+</html>
