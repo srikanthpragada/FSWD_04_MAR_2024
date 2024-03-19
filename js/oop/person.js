@@ -25,7 +25,25 @@ class Student extends Person {
     }
 }
 
+class Employee extends Person {
+    constructor(name, email, job, company) {
+        super(name, email)  // call superclass's constructor 
+        this.job = job
+        this.company = company 
+    }
+
+    print() {
+        super.print()   // call superclass's print() 
+        console.log(this.job)
+        console.log(this.company )
+    }
+}
+
+
 s = new Student("Mark", "mark@gmail.com", "MS CS")
 console.log(s.getEmail())
 s.print() 
+
+e = new Employee("James", "james@gmail.com", "Programmer", "Google")
+e.print() 
 
