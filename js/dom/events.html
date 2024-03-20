@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Demo</title>
+    <script>
+        function handleButton(e) {
+            console.log(`You clicked on ${e.target.innerText}`)
+        }
+        function showMouse(event) {
+            console.log(`${event.x}, ${event.y}`)
+        }
+
+        function handleEnter(ele) {
+            console.log(ele)
+        }
+    </script>
+</head>
+
+<body>
+    <button onClick="handleButton(event)">First</button>
+    <button onClick="handleButton(event)">Second</button>
+    <div style="height:200px;border:solid" 
+         onmouseenter="handleEnter(this)"
+         onmousemove="showMouse(event)">
+    </div>
+</body>
+
+</html>
