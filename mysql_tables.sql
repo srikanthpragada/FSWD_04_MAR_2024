@@ -75,7 +75,26 @@ select sum(salary)
 from employees
 where dept_id = 'sa'
 
+select dept_id, avg(salary)
+from employees
+group by dept_id 
+
+select dept_id, avg(salary)
+from employees
+group by dept_id 
+order by 2
+
+
+select * from departments
+where dept_id in
+  (select dept_id
+   from employees
+   where salary > 500000)
 
 
 
+select dept_id, count(emp_id)
+from employees
+group by dept_id
+having count(emp_id) > 3
 
