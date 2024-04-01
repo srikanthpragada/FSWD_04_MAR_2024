@@ -19,7 +19,8 @@ app.get('/hello',
     (req, res) => {
         let user = "Guest"
 
-        if(req.query.name) 
+        // read value from name query parameter, if present 
+        if(req.query.name)   
             user = req.query.name 
         
         res.send(`<h1>Hello ${user}</h1>`)
