@@ -7,23 +7,20 @@ const port = 3000
 
 var bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.json());
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
-
-app.get('/list',
+app.get('/employees',
   async (req, res) => {
     let con = null
     try {
       con = await mysql2.createConnection(conDetails);
-      const [rows, fields] = await con.query('SELECT * FROM employees');
-      res.render('list', { employees: rows })
+      const [rows, fields] = await con.query
+                                ('SELECT * FROM employees');
+      res.json(rows) 
     }
     catch (error) {
       console.log("Error --> ", error)
-      res.end(`<h3>Sorry! Error :  ${error}`)
+      res.status(500).send(error)
     }
     finally {
       if (con)
@@ -32,6 +29,56 @@ app.get('/list',
   }
 )
 
+app.get('/employees/:id',
+  async (req, res) => {
+    let con = null
+    try {
+      con = await mysql2.createConnection(conDetails);
+      const [rows, fields] = await con.query
+                 ('SELECT * FROM employees where emp_id = ?',
+                   [req.params.id]);
+      if(rows.length > 0)                   
+          res.json(rows[0]) 
+      else
+      {
+         res.status(404).send("Employee Id Not Found!")
+      }
+    }
+    catch (error) {
+      console.log("Error --> ", error)
+      res.status(500).send(error)
+    }
+    finally {
+      if (con)
+        con.end()
+    }
+  }
+)
+
+app.get('/employees/search/:empname',
+  async (req, res) => {
+    let con = null
+    try {
+      con = await mysql2.createConnection(conDetails);
+      const [rows, fields] = await con.query
+                 ('SELECT * FROM employees where fullname like ?',
+                   [`%${req.params.empname}%`]
+                 );
+      res.json(rows)
+    }
+    catch (error) {
+      console.log("Error --> ", error)
+      res.status(500).send(error)
+    }
+    finally {
+      if (con)
+        con.end()
+    }
+  }
+)
+
+
+/*
 app.get('/add',
   (req, res) => {
     res.render("add",
@@ -195,6 +242,8 @@ app.post('/search',
     }
   }
 )
+
+*/
 
 
 app.listen(port,
