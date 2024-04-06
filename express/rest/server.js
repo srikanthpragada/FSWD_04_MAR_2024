@@ -15,12 +15,12 @@ app.get('/employees',
     try {
       con = await mysql2.createConnection(conDetails);
       const [rows, fields] = await con.query
-                                ('SELECT * FROM employees');
-      res.json(rows) 
+        ('SELECT * FROM employees');
+      res.json(rows)
     }
     catch (error) {
       console.log("Error --> ", error)
-      res.status(500).send(error)
+      res.status(500).send(error.sqlMessage)
     }
     finally {
       if (con)
@@ -35,18 +35,16 @@ app.get('/employees/:id',
     try {
       con = await mysql2.createConnection(conDetails);
       const [rows, fields] = await con.query
-                 ('SELECT * FROM employees where emp_id = ?',
-                   [req.params.id]);
-      if(rows.length > 0)                   
-          res.json(rows[0]) 
+        ('SELECT * FROM employees where emp_id = ?',
+          [req.params.id]);
+      if (rows.length > 0)
+        res.json(rows[0])
       else
-      {
-         res.status(404).send("Employee Id Not Found!")
-      }
+        res.status(404).send("Employee Id Not Found!")
     }
     catch (error) {
       console.log("Error --> ", error)
-      res.status(500).send(error)
+      res.status(500).send(error.sqlMessage)
     }
     finally {
       if (con)
@@ -55,20 +53,20 @@ app.get('/employees/:id',
   }
 )
 
-app.get('/employees/search/:empname',
+app.get('/search/:empname',
   async (req, res) => {
     let con = null
     try {
       con = await mysql2.createConnection(conDetails);
       const [rows, fields] = await con.query
-                 ('SELECT * FROM employees where fullname like ?',
-                   [`%${req.params.empname}%`]
-                 );
+        ('SELECT * FROM employees where fullname like ?',
+          [`%${req.params.empname}%`]
+        );
       res.json(rows)
     }
     catch (error) {
       console.log("Error --> ", error)
-      res.status(500).send(error)
+      res.status(500).send(error.sqlMessage)
     }
     finally {
       if (con)
@@ -77,38 +75,50 @@ app.get('/employees/search/:empname',
   }
 )
 
-
-/*
-app.get('/add',
-  (req, res) => {
-    res.render("add",
-      {
-        message: '', empname: '', deptid: '', salary: '',
-      }
-    )
-  }
-)
-
-app.post('/add',
+app.get('/dept/:dept',
   async (req, res) => {
     let con = null
     try {
+      con = await mysql2.createConnection(conDetails);
+      const [rows, fields] = await con.query
+        ('SELECT * FROM employees where dept_id = ?',
+          [req.params.dept]
+        );
+      res.json(rows)
+    }
+    catch (error) {
+      console.log("Error --> ", error)
+      res.status(500).send(error.sqlMessage)
+    }
+    finally {
+      if (con)
+        con.end()
+    }
+  }
+)
+
+app.post('/employees',
+  async (req, res) => {
+    let con = null
+    try {
+      // validate data 
+      let message = validateEmployee(req.body)
+      if (message != null)
+      {
+        res.status(400).send(message)
+        return 
+      }
+
       con = await mysql2.createConnection(conDetails);
       let result = await con.query(
         "insert into employees(fullname,dept_id, salary) values (?,?,?)",
         [req.body.empname, req.body.deptid, req.body.salary]
       )
-      res.redirect("/list")
+      res.status(201).send('Employee Inserted!')
     }
     catch (error) {
       console.log("Error --> ", error)
-      res.render("add",
-        {
-          message: error,
-          empname: req.body.empname,
-          deptid: req.body.deptid,
-          salary: req.body.salary,
-        })
+      res.status(500).send(error.sqlMessage)
     }
     finally {
       if (con)
@@ -117,20 +127,25 @@ app.post('/add',
   }
 )
 
-app.get('/delete/:empid',
+
+app.delete('/employees/:id',
   async (req, res) => {
     let con = null
     try {
       con = await mysql2.createConnection(conDetails);
-      let result = await con.query(
+      let [result, fields] = await con.query(
         "delete from employees where emp_id = ?",
-        [req.params.empid]
+        [req.params.id]
       )
-      res.redirect("/list")
+      console.log(result)
+      if (result.affectedRows === 1)
+        res.status(204).end()
+      else
+        res.status(404).send("Employee Id Not Found!")
     }
     catch (error) {
       console.log("Error --> ", error)
-      res.end(`<h4>Sorry! Could not delete employee ${req.params.empid} </h4>`)
+      res.status(500).send(error.sqlMessage)
     }
     finally {
       if (con)
@@ -139,111 +154,60 @@ app.get('/delete/:empid',
   }
 )
 
-
-app.get('/edit/:empid',
+app.put('/employees/:id',
   async (req, res) => {
     let con = null
     try {
-      con = await mysql2.createConnection(conDetails);
-      let [rows, fields] = await con.query(
-        "select * from employees where emp_id = ?",
-        [req.params.empid]
-      )
-      let emp = rows[0]
-      console.log(emp)
-      res.render("edit",
-        {
-          message: '',
-          empname: emp.fullname,
-          deptid: emp.dept_id,
-          salary: emp.salary
-        }
-      )
-    }
-    catch (error) {
-      console.log("Error --> ", error)
-      res.end(`<h4>Sorry! Could not delete employee ${req.params.empid} </h4>`)
-    }
-    finally {
-      if (con)
-        await con.end()
-    }
+      let message = validateEmployee(req.body)
+      if (message != null)
+      {
+        res.status(400).send(message)
+        return 
+      }
 
-  }
-)
-
-app.post('/edit/:empid',
-  async (req, res) => {
-    let con = null
-    try {
       con = await mysql2.createConnection(conDetails);
-      // Update Table
-      await con.query(
+      let [result, dummy] = await con.query(
         "update employees set fullname = ?, dept_id = ?, salary = ? where emp_id = ?",
-        [req.body.empname, req.body.deptid, req.body.salary, req.params.empid])
-      res.redirect("/list")
+        [req.body.empname, req.body.deptid, req.body.salary, req.params.id]
+      )
+
+      if (result.affectedRows === 1)
+        res.status(200).send('Updated Successfully')
+      else
+        res.status(404).send("Employee Id Not Found!")
     }
     catch (error) {
       console.log("Error --> ", error)
-      res.render("edit",
-        {
-          message: error.sqlMessage,
-          empname: req.body.empname,
-          deptid: req.body.deptid,
-          salary: req.body.salary
-        }
-      )
+      res.status(500).send(error.sqlMessage)
     }
     finally {
       if (con)
         await con.end()
     }
-
   }
 )
 
 
-app.get('/search',
-  async (req, res) => {
-    let con = null
-    try {
-      con = await mysql2.createConnection(conDetails);
-      res.render('search', { empname : '', employees : null })
-    }
-    catch (error) {
-      console.log("Error --> ", error)
-      res.end(`<h3>Sorry! Error :  ${error}`)
-    }
-    finally {
-      if (con)
-        con.end()
-    }
+function validateEmployee(employee) {
+  console.log(employee)
+  // validate data 
+  if (!employee.empname) {
+    return "Employee name is missing!"
   }
-)
 
-app.post('/search',
-  async (req, res) => {
-    let con = null
-    try {
-      con = await mysql2.createConnection(conDetails);
-      let [rows, fields] =  await con.query
-        ("select * from employees where fullname like ?",
-        [`%${req.body.empname}%`])
-      res.render('search', { empname : req.body.empname,
-             employees : rows})
-    }
-    catch (error) {
-      console.log("Error --> ", error)
-      res.end(`<h3>Sorry! Error :  ${error}`)
-    }
-    finally {
-      if (con)
-        con.end()
-    }
+  if (!employee.deptid) {
+    return "Department Id is missing!"
   }
-)
 
-*/
+  if (!employee.salary) {
+    return "Salary is missing!"
+  }
+
+  if(employee.salary < 0)
+     return "Invalid Salary!"
+
+  return null;
+}
 
 
 app.listen(port,
