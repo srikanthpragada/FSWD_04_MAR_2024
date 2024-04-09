@@ -1,5 +1,5 @@
 
-
+// Function component 
 export default function Hello() {
      return (
        <>
