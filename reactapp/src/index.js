@@ -2,11 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import CoursesList2 from './props/CoursesList2';
+import Counter from './state/Counter';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-     <CoursesList2 />
+    <Counter />
+
 );
 
 // If you want to start measuring performance in your app, pass a function
