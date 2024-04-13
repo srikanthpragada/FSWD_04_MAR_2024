@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import Skills2 from './state/Skills2';
+import Skills3 from './state/Skills3';
  
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <Skills2 />
+    <Skills3 />
 
 );
 
