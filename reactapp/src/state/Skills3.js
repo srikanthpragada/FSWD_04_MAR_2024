@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
-function AddSkill({ addSkill }) {
+function AddSkill({ skills, addSkill }) {
     let [skill, setSkill] = useState({ title: '', rating: -1 })
+    let [message, setMessage] = useState("")
 
     function updateTitle(e) {
         // update title property with new value entered in textbox 
@@ -15,10 +16,18 @@ function AddSkill({ addSkill }) {
 
     function processForm(e) {
         e.preventDefault()
+        setMessage("")
         if (skill.rating == -1)
-            alert("Please select rating for the skill!")
-        else
-            addSkill(skill)   // call function in parent 
+            setMessage("Please select rating first!")
+        else {
+            // check whether skill is unique 
+
+            let firstSkill = skills.find((s) => s.title === skill.title)
+            if (!firstSkill)  // unique 
+                addSkill(skill)   // call function in parent 
+            else
+                setMessage("Duplicate Skill!")
+        }
     }
 
 
@@ -41,6 +50,8 @@ function AddSkill({ addSkill }) {
                 </select>
                 <p></p>
                 <button>Add</button>
+                <p></p>
+                <h5 className="text-danger">{message}</h5>
             </form>
         </>
     )
@@ -48,6 +59,10 @@ function AddSkill({ addSkill }) {
 
 function ListSkills({ skills, deleteSkill }) {
 
+    function deleteOneSkill(idx) {
+        if (window.confirm("Do you want to delete?"))
+            deleteSkill(idx)
+    }
     return (
         <>
             <h4>List of Skills</h4>
@@ -65,7 +80,7 @@ function ListSkills({ skills, deleteSkill }) {
                             <td>{s.rating}</td>
                             <td>
                                 <button className="btn btn-danger"
-                                   onClick={ () => deleteSkill(idx) }>Delete</button>
+                                    onClick={() => deleteOneSkill(idx)}>Delete</button>
                             </td>
                         </tr>
                     )
@@ -84,7 +99,7 @@ export default function Skills3() {
     }
 
     function deleteSkill(idxToDelete) {
-        setSkills(skills.filter ( (s,idx) => idx != idxToDelete))
+        setSkills(skills.filter((s, idx) => idx != idxToDelete))
     }
     return (
         <>
@@ -92,10 +107,10 @@ export default function Skills3() {
             <hr />
             <div className="row">
                 <div className="col-sm-6">
-                    <AddSkill addSkill={addSkill} />
+                    <AddSkill skills={skills} addSkill={addSkill} />
                 </div>
                 <div className="col-sm-6">
-                   { skills.length > 0 ? <ListSkills skills={skills} deleteSkill={deleteSkill} /> : '' }
+                    {skills.length > 0 ? <ListSkills skills={skills} deleteSkill={deleteSkill} /> : ''}
                 </div>
             </div>
         </>
