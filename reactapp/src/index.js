@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import UncontrolledDemo from './state/UncontrolledDemo';
+import FetchDemoAsync from './ajax/FetchDemoAsync';
  
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <UncontrolledDemo />
+    <FetchDemoAsync />
 
 );
 

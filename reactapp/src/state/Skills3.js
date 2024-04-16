@@ -58,7 +58,15 @@ function AddSkill({ skills, addSkill }) {
 }
 
 function ListSkills({ skills, deleteSkill }) {
+    function avgerageRating() {
+        var total = 0
+        for (let s of skills) {
+            total += parseInt(s.rating)
+        }
 
+        return  total / skills.length 
+    }
+    
     function deleteOneSkill(idx) {
         if (window.confirm("Do you want to delete?"))
             deleteSkill(idx)
@@ -86,6 +94,7 @@ function ListSkills({ skills, deleteSkill }) {
                     )
                 }
             </table>
+            <h4>Average Rating : {avgerageRating()} </h4>
         </>
     )
 
