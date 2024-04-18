@@ -27,7 +27,12 @@ export default function Countries() {
     function getCountriesByRegion(e) {
          let region = e.target.value 
          setRegion(region)
-         setSelectedCountries (countries.filter( c => c.region === region))   
+         // get countries by region
+         let selCountries = countries.filter( c => c.region === region)
+         // sort countries by name
+         selCountries.sort((c1,c2) => c1.name.common.localeCompare(c2.name.common))
+         // update selectedCountries array 
+         setSelectedCountries ([...selCountries])   
     }
 
     // Get all unique regions into an array 
@@ -58,16 +63,16 @@ export default function Countries() {
                             <table className="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Capital</th>
-                                        <th>Flag</th>
+                                        <th className="text-center">Name</th>
+                                        <th className="text-center">Capital</th>
+                                        <th className="text-center">Flag</th>
                                     </tr>
                                     {selectedCountries.map((country, idx) => {
                                         return (
                                             <tr key={idx}>
-                                                <td>{country.name.common}</td>
-                                                <td>{country.capital ? country.capital.join(",") : "None"}</td>
-                                                <td>
+                                                <td className="text-center">{country.name.common}</td>
+                                                <td className="text-center">{country.capital ? country.capital.join(",") : "None"}</td>
+                                                <td className="text-center">
                                                     <img style={{ width: '100px', height: '50px' }}
                                                         src={country.flags.png} alt={country.name} />
                                                 </td>
