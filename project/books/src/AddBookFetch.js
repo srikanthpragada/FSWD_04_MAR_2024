@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import $ from 'jquery'
-import { BOOKS_URL } from './constants'
+import { SERVER_URL } from './constants'
 import { useNavigate } from 'react-router-dom'
 
 export default function AddBookFetch() {
@@ -8,11 +7,10 @@ export default function AddBookFetch() {
   let navigate = useNavigate()
 
   async function addBook(event) {
-
     event.preventDefault()
 
     // make ajax request for post 
-    let response = await fetch(BOOKS_URL, {
+    let response = await fetch(SERVER_URL + "/books", {
       method: 'post',
       body: JSON.stringify(book),
       headers: {

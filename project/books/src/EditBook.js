@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import $ from 'jquery'
 import { useParams } from "react-router-dom";
-import { BOOKS_URL } from './constants';
+import { SERVER_URL } from './constants';
 import { useNavigate } from 'react-router-dom'
 
 export default function EditBook() {
@@ -10,7 +10,7 @@ export default function EditBook() {
     let navigate = useNavigate()
 
     useEffect(() => {
-        $.get(`${BOOKS_URL}/${bookId}`,
+        $.get(`${SERVER_URL}/books/${bookId}`,
             (book) => {
                 setBook(book)
             }
@@ -35,9 +35,10 @@ export default function EditBook() {
         // make ajax request for post 
         $.ajax(
             {
-                url:`${BOOKS_URL}/${bookId}`,
+                url:`${SERVER_URL}/books/${bookId}`,
                 method: 'put',
-                data: book,
+                data: JSON.stringify(book),   // JS to JSON
+                contentType: 'application/json; charset=utf-8',
                 success: function () {
                     alert("Book updated successfully!")
                 },
@@ -63,7 +64,7 @@ export default function EditBook() {
                 <p></p>
 
                 Price <br />
-                <input type="number" value={book.price} onChange={changeValue} name="price" />
+                <input type="number" min="0" value={book.price} onChange={changeValue} name="price" />
                 <p></p>
                 <button>Update Book</button>
                 &nbsp;

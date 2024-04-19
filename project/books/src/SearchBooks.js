@@ -23,7 +23,8 @@ export default function SearchBooks() {
     return (
         <>
             <h3>Search Books</h3>
-            Title <input type="text" value={searchText} onChange={changeValue} />
+            Title <input type="text" value={searchText}
+                   onChange={changeValue} />
             <button onClick={searchBooks}>Search</button>
             <p></p>
 
@@ -48,7 +49,7 @@ export default function SearchBooks() {
                         }
                     </tbody>
                 </table>
-                : done ? <h5>Sorry!! No books found</h5> : ''
+                : done ? <h5>Sorry!! No books found!!</h5> : ''
             }
 
         </>

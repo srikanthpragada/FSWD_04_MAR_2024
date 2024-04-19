@@ -3,14 +3,13 @@ var handlers = require("./restHandlers")
 var cors = require('cors')
 
 
-const port = 7777
+const port = 8888
 var app = express();
 app.use(express.json());
 app.use(cors())
 
 // static files config
-
-//app.use(express.static('dist', { index: 'index.html' }))
+app.use(express.static('build', { index: 'index.html' }))
 
 
 app.get('/books', handlers.getBooks) 

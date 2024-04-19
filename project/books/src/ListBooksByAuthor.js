@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import $ from 'jquery'
-import {BOOKS_URL} from './constants'
+import {SERVER_URL} from './constants'
 import { useParams } from "react-router-dom";
 
 export default function ListBooksByAuthor() {
@@ -10,7 +10,7 @@ export default function ListBooksByAuthor() {
     useEffect(() => getBooksByAuthor())
 
     function getBooksByAuthor() {
-        $.get(BOOKS_URL + "/author?author=" + author,
+        $.get(SERVER_URL + "/books/author?author=" + author,
             (result) => {
                 setBooks(result)
             }
